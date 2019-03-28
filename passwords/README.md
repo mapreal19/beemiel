@@ -6,7 +6,7 @@ We use PASETO under the hood: https://paseto.io/
 
 Set your env values first: `PASETO_PRIVATE_KEY` & `PASETO_PUBLIC_KEY`
 
-You could generate those using `eed25519`:
+You could generate those using `ed25519`:
 
 ```go
 publicKey, privateKey, _ := ed25519.GenerateKey(nil)
