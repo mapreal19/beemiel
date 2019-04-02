@@ -4,14 +4,14 @@ import (
 	"os"
 )
 
-var envKey = "BEEGO_ENV"
+var envKey string
 
 func Init(key string) {
 	if key == "" {
-		return
+		envKey = "BEEGO_ENV"
+	} else {
+		envKey = key
 	}
-
-	envKey = key
 }
 
 func IsProduction() bool {

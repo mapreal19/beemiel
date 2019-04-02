@@ -10,6 +10,7 @@ import (
 var _ = Describe("envs", func() {
 	Describe("IsProduction", func() {
 		It("uses BEEGO_ENV key by default", func() {
+			envs.Init("")
 			_ = os.Setenv("BEEGO_ENV", "production")
 
 			Expect(envs.IsProduction()).To(BeTrue())
