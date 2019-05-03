@@ -69,4 +69,3 @@ var _ = Describe("passwords", func() {
 		})
 	})
 })
-
