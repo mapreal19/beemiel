@@ -41,19 +41,21 @@ func (matcher *setFlashMatcher) Match(actual interface{}) (success bool, err err
 
 func (matcher *setFlashMatcher) FailureMessage(actual interface{}) (message string) {
 	return fmt.Sprintf(
-		"Expected response to set flash level to %#v and message to %#v, recieved: %#v",
+		"Expected response to set flash level to %#v and message to %#v, recieved response with flash level: %#v and message: %#v",
 		matcher.level,
 		matcher.message,
-		actual,
+		getFlashLevel(actual.(*httptest.ResponseRecorder)),
+		getFlashMessage(actual.(*httptest.ResponseRecorder)),
 	)
 }
 
 func (matcher *setFlashMatcher) NegatedFailureMessage(actual interface{}) (message string) {
 	return fmt.Sprintf(
-		"Expected response not to set flash level to %#v and message to %#v, recieved: %#v",
+		"Expected response not to set flash level to %#v and message to %#v, recieved response with flash level: %#v and message: %#v",
 		matcher.level,
 		matcher.message,
-		actual,
+		getFlashLevel(actual.(*httptest.ResponseRecorder)),
+		getFlashMessage(actual.(*httptest.ResponseRecorder)),
 	)
 }
 
