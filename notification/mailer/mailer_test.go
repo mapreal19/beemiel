@@ -1,6 +1,7 @@
 package mailer_test
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/mapreal19/beemiel/envs"
@@ -26,7 +27,8 @@ var _ = Describe("mailer", func() {
 			email.Ccs = []string{"blanka@good.good"}
 			email.Bccs = []string{"chun.li@good.good"}
 
-			mailer.Send(email)
+			err := mailer.Send(email)
+			Expect(err).To(BeNil())
 
 			mockEmail := mailer.GetMock()
 			Expect(mockEmail.From).To(Equal("m.bison@bad.bad"))
@@ -36,6 +38,49 @@ var _ = Describe("mailer", func() {
 			Expect(len(mockEmail.Tos)).To(Equal(1))
 			Expect(len(mockEmail.Ccs)).To(Equal(1))
 			Expect(len(mockEmail.Bccs)).To(Equal(1))
+		})
+	})
+
+	Describe("Mock email file", func() {
+		It("get same file parameters", func() {
+			envs.Init("")
+			_ = os.Setenv("BEEGO_ENV", "test")
+			mailer.Init("dontNeeded")
+
+			var attachement mailer.Attachement
+			attachement.Name = "hello.txt"
+			attachement.Type = "text/plain"
+			attachement.Data = []byte("Hello world")
+
+			var email mailer.Email
+			email.From = "m.bison@bad.bad"
+			email.Tos = []string{"ryu@good.good"}
+			email.Attachements = []mailer.Attachement{attachement}
+
+			err := mailer.Send(email)
+			Expect(err).To(BeNil())
+
+			mockEmail := mailer.GetMock()
+			Expect(len(mockEmail.Attachements)).To(Equal(1))
+			Expect(mockEmail.Attachements[0].Name).To(Equal("hello.txt"))
+			Expect(mockEmail.Attachements[0].Type).To(Equal("text/plain"))
+			Expect(mockEmail.Attachements[0].Data).To(Equal([]byte("Hello world")))
+		})
+	})
+	Describe("1 To at least", func() {
+		It("get same file parameters", func() {
+			envs.Init("")
+			_ = os.Setenv("BEEGO_ENV", "test")
+			mailer.Init("dontNeeded")
+
+			var email mailer.Email
+			email.From = "m.bison@bad.bad"
+
+			err := mailer.Send(email)
+			Expect(err).To(Equal(fmt.Errorf("There must be at least 1 'To' recipient")))
+
+			mockEmail := mailer.GetMock()
+			Expect(mockEmail.From).To(Equal(""))
 		})
 	})
 })

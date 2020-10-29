@@ -1,6 +1,8 @@
 package mailer
 
 import (
+	"encoding/base64"
+
 	"github.com/astaxie/beego"
 	"github.com/sendgrid/sendgrid-go"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
@@ -18,13 +20,23 @@ func sengridSender(email Email) error {
 
 	m := mail.NewV3Mail()
 	m.SetFrom(fromMail)
-	m.AddAttachment().Subject = email.Subject
 	m.AddContent(body)
+
+	for _, atachement := range email.Attachements {
+		encoded := base64.StdEncoding.EncodeToString(atachement.Data)
+		a := mail.NewAttachment()
+		a.SetContent(encoded)
+		a.SetType(atachement.Type)
+		a.SetFilename(atachement.Name)
+		a.SetDisposition("attachment")
+		m.AddAttachment(a)
+	}
 
 	p := mail.NewPersonalization()
 	p.AddTos(convertMails(email.Tos)...)
 	p.AddCCs(convertMails(email.Ccs)...)
 	p.AddBCCs(convertMails(email.Bccs)...)
+	p.Subject = email.Subject
 	m.AddPersonalizations(p)
 
 	request := sendgrid.GetRequest(
