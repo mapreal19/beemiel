@@ -14,14 +14,13 @@ type Email struct {
 }
 
 type emailSender struct {
-	send recorderFunc
+	send sendInterface
 }
 
-type recorderFunc func(Email) error
+type sendInterface func(Email) error
 
 var recorder *Email
 var sender *emailSender
-var mock bool
 var sendgridApiKey string
 
 func Init(key string) {
@@ -30,9 +29,7 @@ func Init(key string) {
 		sendgridApiKey = key
 		sender = newSengridSender()
 	} else {
-		var send recorderFunc
-		send, recorder = mockSend(nil)
-		sender = &emailSender{send: send}
+		sender = mockSender()
 	}
 }
 
