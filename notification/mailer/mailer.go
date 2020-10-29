@@ -11,6 +11,12 @@ type Email struct {
 	Subject, Body, From string
 	Tos, Ccs, Bccs      []string
 	FromName            string //Name of sender ej: M. Bison
+	Attachements        []Attachement
+}
+
+type Attachement struct {
+	Data       []byte
+	Name, Type string
 }
 
 type emailSender struct {
@@ -42,6 +48,9 @@ func GetMock() *Email {
 }
 
 func (e *emailSender) Send(email Email) error {
+	if len(email.Tos) < 1 {
+		return fmt.Errorf("There must be at least 1 'To' recipient")
+	}
 
 	if !envs.IsProduction() {
 		message := fmt.Sprintf(
