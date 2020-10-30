@@ -16,11 +16,11 @@ func sengridSender(email Email) error {
 	beego.Info("Sending email through Sendgrid... Recipient: ", email.Tos[0])
 
 	fromMail := mail.NewEmail(email.FromName, email.From)
-	body := mail.NewContent("text/html", email.Body)
 
 	m := mail.NewV3Mail()
 	m.SetFrom(fromMail)
-	m.AddContent(body)
+	contents := buildBodies(email)
+	m.AddContent(contents...)
 
 	for _, atachement := range email.Attachements {
 		encoded := base64.StdEncoding.EncodeToString(atachement.Data)
@@ -37,6 +37,7 @@ func sengridSender(email Email) error {
 	p.AddCCs(convertMails(email.Ccs)...)
 	p.AddBCCs(convertMails(email.Bccs)...)
 	p.Subject = email.Subject
+
 	m.AddPersonalizations(p)
 
 	request := sendgrid.GetRequest(
@@ -57,4 +58,14 @@ func convertMails(addresses []string) []*mail.Email {
 		mails[i] = mail.NewEmail("", addr)
 	}
 	return mails
+}
+
+func buildBodies(email Email) (contents []*mail.Content) {
+	if email.PlainBody != "" {
+		contents = append(contents, mail.NewContent("text/plain", email.PlainBody))
+	}
+	if email.Body != "" {
+		contents = append(contents, mail.NewContent("text/html", email.Body))
+	}
+	return
 }
