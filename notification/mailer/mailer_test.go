@@ -22,7 +22,8 @@ var _ = Describe("mailer", func() {
 			email.From = "m.bison@bad.bad"
 			email.FromName = "M. Bison"
 			email.Subject = "Surrender!"
-			email.Body = "I go to win!"
+			email.Body = "<b>I go to win!</b>"
+			email.PlainBody = "I go to win!"
 			email.Tos = []string{"ryu@good.good"}
 			email.Ccs = []string{"blanka@good.good"}
 			email.Bccs = []string{"chun.li@good.good"}
@@ -34,7 +35,8 @@ var _ = Describe("mailer", func() {
 			Expect(mockEmail.From).To(Equal("m.bison@bad.bad"))
 			Expect(mockEmail.FromName).To(Equal("M. Bison"))
 			Expect(mockEmail.Subject).To(Equal("Surrender!"))
-			Expect(mockEmail.Body).To(Equal("I go to win!"))
+			Expect(mockEmail.Body).To(Equal("<b>I go to win!</b>"))
+			Expect(mockEmail.PlainBody).To(Equal("I go to win!"))
 			Expect(len(mockEmail.Tos)).To(Equal(1))
 			Expect(len(mockEmail.Ccs)).To(Equal(1))
 			Expect(len(mockEmail.Bccs)).To(Equal(1))
