@@ -11,7 +11,14 @@ import (
 type Message struct {
 	Channel, Body, Header string
 	IconURL, Username     string
+	Attachments           []Attachment
 }
+
+type Attachment struct {
+	Data       []byte
+	Name, Type string
+}
+
 type slackSender struct {
 	send sendInterface
 }
