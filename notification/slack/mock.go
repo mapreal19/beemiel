@@ -12,7 +12,7 @@ func mockSend(errToReturn error) (sendInterface, *Message) {
 	r := new(Message)
 
 	return func(message Message) error {
-		*r = Message{message.Channel, message.Body, message.Header, message.IconURL, message.Username}
+		*r = Message{message.Channel, message.Body, message.Header, message.IconURL, message.Username, message.Attachments}
 		return errToReturn
 	}, r
 }
