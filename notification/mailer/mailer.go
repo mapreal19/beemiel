@@ -8,10 +8,10 @@ import (
 )
 
 type Email struct {
-	Subject, Body, From string
-	Tos, Ccs, Bccs      []string
-	FromName            string //Name of sender ej: M. Bison
-	Attachments         []Attachment
+	Subject, Body, PlainBody, From string
+	Tos, Ccs, Bccs                 []string
+	FromName                       string //Name of sender ej: M. Bison
+	Attachments                    []Attachment
 }
 
 type Attachment struct {
