@@ -23,7 +23,7 @@ type emailSender struct {
 	send sendInterface
 }
 
-type sendInterface func(Email) error
+type sendInterface func(Email)
 
 var recorder *Email
 var sender *emailSender
@@ -61,6 +61,6 @@ func (e *emailSender) Send(email Email) error {
 		)
 		beego.Info(message)
 	}
-
-	return e.send(email)
+	e.send(email)
+	return nil
 }

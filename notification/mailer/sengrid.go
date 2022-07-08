@@ -12,7 +12,7 @@ func newSengridSender() *emailSender {
 	return &emailSender{sengridSender}
 }
 
-func sengridSender(email Email) error {
+func sengridSender(email Email) {
 	beego.Info("Sending email through Sendgrid... Recipient: ", email.Tos[0])
 
 	fromMail := mail.NewEmail(email.FromName, email.From)
@@ -47,9 +47,7 @@ func sengridSender(email Email) error {
 	)
 	request.Method = "POST"
 	request.Body = mail.GetRequestBody(m)
-	_, err := sendgrid.API(request)
-
-	return err
+	sendgrid.MakeRequestAsync(request)
 }
 
 func convertMails(addresses []string) []*mail.Email {
