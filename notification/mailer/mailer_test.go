@@ -44,12 +44,12 @@ var _ = Describe("mailer", func() {
 	})
 
 	Describe("Mock email file", func() {
-		It("get same file parameters", func() {
+		It("get attachment", func() {
 			envs.Init("")
 			_ = os.Setenv("BEEGO_ENV", "test")
 			mailer.Init("dontNeeded")
 
-			var attachement mailer.Attachement
+			var attachement mailer.Attachment
 			attachement.Name = "hello.txt"
 			attachement.Type = "text/plain"
 			attachement.Data = []byte("Hello world")
@@ -57,16 +57,16 @@ var _ = Describe("mailer", func() {
 			var email mailer.Email
 			email.From = "m.bison@bad.bad"
 			email.Tos = []string{"ryu@good.good"}
-			email.Attachements = []mailer.Attachement{attachement}
+			email.Attachments = []mailer.Attachment{attachement}
 
 			err := mailer.Send(email)
 			Expect(err).To(BeNil())
 
 			mockEmail := mailer.GetMock()
-			Expect(len(mockEmail.Attachements)).To(Equal(1))
-			Expect(mockEmail.Attachements[0].Name).To(Equal("hello.txt"))
-			Expect(mockEmail.Attachements[0].Type).To(Equal("text/plain"))
-			Expect(mockEmail.Attachements[0].Data).To(Equal([]byte("Hello world")))
+			Expect(len(mockEmail.Attachments)).To(Equal(1))
+			Expect(mockEmail.Attachments[0].Name).To(Equal("hello.txt"))
+			Expect(mockEmail.Attachments[0].Type).To(Equal("text/plain"))
+			Expect(mockEmail.Attachments[0].Data).To(Equal([]byte("Hello world")))
 		})
 	})
 	Describe("1 To at least", func() {

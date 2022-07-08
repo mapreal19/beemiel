@@ -22,12 +22,12 @@ func sengridSender(email Email) {
 	contents := buildBodies(email)
 	m.AddContent(contents...)
 
-	for _, atachement := range email.Attachements {
-		encoded := base64.StdEncoding.EncodeToString(atachement.Data)
+	for _, attachment := range email.Attachments {
+		encoded := base64.StdEncoding.EncodeToString(attachment.Data)
 		a := mail.NewAttachment()
 		a.SetContent(encoded)
-		a.SetType(atachement.Type)
-		a.SetFilename(atachement.Name)
+		a.SetType(attachment.Type)
+		a.SetFilename(attachment.Name)
 		a.SetDisposition("attachment")
 		m.AddAttachment(a)
 	}

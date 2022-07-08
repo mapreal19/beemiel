@@ -11,10 +11,10 @@ type Email struct {
 	Subject, Body, PlainBody, From string
 	Tos, Ccs, Bccs                 []string
 	FromName                       string //Name of sender ej: M. Bison
-	Attachements                   []Attachement
+	Attachments                    []Attachment
 }
 
-type Attachement struct {
+type Attachment struct {
 	Data       []byte
 	Name, Type string
 }
