@@ -17,7 +17,7 @@ var _ = Describe("mailer", func() {
 			envs.Init("")
 			_ = os.Setenv("BEEGO_ENV", "test")
 
-			mailer.Init("dontNeeded")
+			mailer.Init("dontNeeded", mailer.Provider.SendGrid)
 			var email mailer.Email
 			email.From = "m.bison@bad.bad"
 			email.FromName = "M. Bison"
@@ -47,7 +47,7 @@ var _ = Describe("mailer", func() {
 		It("get attachment", func() {
 			envs.Init("")
 			_ = os.Setenv("BEEGO_ENV", "test")
-			mailer.Init("dontNeeded")
+			mailer.Init("dontNeeded", mailer.Provider.SendGrid)
 
 			var attachement mailer.Attachment
 			attachement.Name = "hello.txt"
@@ -73,7 +73,7 @@ var _ = Describe("mailer", func() {
 		It("get same file parameters", func() {
 			envs.Init("")
 			_ = os.Setenv("BEEGO_ENV", "test")
-			mailer.Init("dontNeeded")
+			mailer.Init("dontNeeded", mailer.Provider.SendGrid)
 
 			var email mailer.Email
 			email.From = "m.bison@bad.bad"

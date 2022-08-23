@@ -4,6 +4,8 @@ go 1.15
 
 require (
 	github.com/astaxie/beego v1.12.3
+	github.com/gobuffalo/envy v1.10.1 // indirect
+	github.com/mailgun/mailgun-go v2.0.0+incompatible // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/o1egl/paseto v1.0.0
 	github.com/onsi/ginkgo v1.12.0

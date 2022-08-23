@@ -41,7 +41,7 @@ func sengridSender(email Email) {
 	m.AddPersonalizations(p)
 
 	request := sendgrid.GetRequest(
-		sendgridApiKey,
+		apiKey,
 		"/v3/mail/send",
 		"https://api.sendgrid.com",
 	)
