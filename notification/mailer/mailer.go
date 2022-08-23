@@ -7,6 +7,13 @@ import (
 	"github.com/mapreal19/beemiel/envs"
 )
 
+var Provider = struct {
+	MailGun, SendGrid string
+}{
+	MailGun:  "MAILGUN",
+	SendGrid: "SENDGRID",
+}
+
 type Email struct {
 	Subject, Body, PlainBody, From string
 	Tos, Ccs, Bccs                 []string
@@ -27,13 +34,19 @@ type sendInterface func(Email)
 
 var recorder *Email
 var sender *emailSender
-var sendgridApiKey string
+var apiKey string
 
-func Init(key string) {
+func Init(key, provider string) {
 
 	if envs.IsProduction() {
-		sendgridApiKey = key
-		sender = newSengridSender()
+		apiKey = key
+		switch provider {
+		case Provider.MailGun:
+			sender = newMailgunSender()
+		case Provider.SendGrid:
+			sender = newSengridSender()
+		}
+
 	} else {
 		sender = mockSender()
 	}
