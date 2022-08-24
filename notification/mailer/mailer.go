@@ -30,21 +30,26 @@ type emailSender struct {
 	send sendInterface
 }
 
-type sendInterface func(Email)
+type sendInterface func(Email) error
 
 var recorder *Email
 var sender *emailSender
-var apiKey string
+
+type globalConf struct {
+	ApiKey string
+}
 
 func Init(key, provider string) {
-
 	if envs.IsProduction() {
-		apiKey = key
+
+		g := globalConf{
+			ApiKey: key,
+		}
 		switch provider {
 		case Provider.MailGun:
-			sender = newMailgunSender()
+			sender = newMailgunSender(g)
 		case Provider.SendGrid:
-			sender = newSengridSender()
+			sender = newSengridSender(g)
 		}
 
 	} else {
@@ -74,6 +79,5 @@ func (e *emailSender) Send(email Email) error {
 		)
 		beego.Info(message)
 	}
-	e.send(email)
-	return nil
+	return e.send(email)
 }

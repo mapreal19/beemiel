@@ -11,7 +11,8 @@ func mockSender() *emailSender {
 func mockSend() (sendInterface, *Email) {
 	r := new(Email)
 
-	return func(email Email) {
+	return func(email Email) error {
 		*r = Email{email.Subject, email.Body, email.PlainBody, email.From, email.Tos, email.Ccs, email.Bccs, email.FromName, email.Attachments}
+		return nil
 	}, r
 }
