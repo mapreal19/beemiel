@@ -20,7 +20,7 @@ func newSengridSender(g globalConf) *emailSender {
 	return &emailSender{sendGridConf.sengridSender}
 }
 
-func (s *sendGrid) sengridSender(email Email) {
+func (s *sendGrid) sengridSender(email Email) error {
 	beego.Info("Sending email through Sendgrid... Recipient: ", email.Tos[0])
 
 	fromMail := mail.NewEmail(email.FromName, email.From)
@@ -56,6 +56,7 @@ func (s *sendGrid) sengridSender(email Email) {
 	request.Method = "POST"
 	request.Body = mail.GetRequestBody(m)
 	sendgrid.MakeRequestAsync(request)
+	return nil
 }
 
 func (s *sendGrid) convertMails(addresses []string) []*mail.Email {

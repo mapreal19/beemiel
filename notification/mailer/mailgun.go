@@ -31,7 +31,7 @@ func newMailgunSender(g globalConf) *emailSender {
 	return &emailSender{mailGunConf.mailgunSender}
 }
 
-func (m *mailGun) mailgunSender(email Email) {
+func (m *mailGun) mailgunSender(email Email) error {
 	beego.Info("Sending email through MailGun... Recipient: ", email.Tos[0])
 	mg := mailgun.NewMailgun(m.Domain, m.ApiKey)
 	m.setRegion(mg, m.Region)
@@ -47,9 +47,10 @@ func (m *mailGun) mailgunSender(email Email) {
 	m.addAttachments(message, email.Attachments)
 	message.SetHtml(email.Body)
 
-	mg.Send(message)
-
+	_, _, err := mg.Send(message)
+	return err
 }
+
 func (m *mailGun) setRegion(mg *mailgun.MailgunImpl, region string) {
 	switch region {
 	case Region.EU:
@@ -58,6 +59,7 @@ func (m *mailGun) setRegion(mg *mailgun.MailgunImpl, region string) {
 		mg.SetAPIBase("https://api.mailgun.net/v3")
 	}
 }
+
 func (m *mailGun) addAttachments(message *mailgun.Message, attachment []Attachment) {
 	for _, att := range attachment {
 		message.AddBufferAttachment(att.Name, att.Data)
