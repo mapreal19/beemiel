@@ -34,17 +34,22 @@ type sendInterface func(Email)
 
 var recorder *Email
 var sender *emailSender
-var apiKey string
+
+type globalConf struct {
+	ApiKey string
+}
 
 func Init(key, provider string) {
-
 	if envs.IsProduction() {
-		apiKey = key
+
+		g := globalConf{
+			ApiKey: key,
+		}
 		switch provider {
 		case Provider.MailGun:
-			sender = newMailgunSender()
+			sender = newMailgunSender(g)
 		case Provider.SendGrid:
-			sender = newSengridSender()
+			sender = newSengridSender(g)
 		}
 
 	} else {

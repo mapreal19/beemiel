@@ -8,18 +8,26 @@ import (
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
 )
 
-func newSengridSender() *emailSender {
-	return &emailSender{sengridSender}
+type sendGrid struct {
+	globalConf
+	Region, Domain string
 }
 
-func sengridSender(email Email) {
+var sendGridConf sendGrid
+
+func newSengridSender(g globalConf) *emailSender {
+	sendGridConf.globalConf = g
+	return &emailSender{sendGridConf.sengridSender}
+}
+
+func (s *sendGrid) sengridSender(email Email) {
 	beego.Info("Sending email through Sendgrid... Recipient: ", email.Tos[0])
 
 	fromMail := mail.NewEmail(email.FromName, email.From)
 
 	m := mail.NewV3Mail()
 	m.SetFrom(fromMail)
-	contents := buildBodies(email)
+	contents := s.buildBodies(email)
 	m.AddContent(contents...)
 
 	for _, attachment := range email.Attachments {
@@ -33,15 +41,15 @@ func sengridSender(email Email) {
 	}
 
 	p := mail.NewPersonalization()
-	p.AddTos(convertMails(email.Tos)...)
-	p.AddCCs(convertMails(email.Ccs)...)
-	p.AddBCCs(convertMails(email.Bccs)...)
+	p.AddTos(s.convertMails(email.Tos)...)
+	p.AddCCs(s.convertMails(email.Ccs)...)
+	p.AddBCCs(s.convertMails(email.Bccs)...)
 	p.Subject = email.Subject
 
 	m.AddPersonalizations(p)
 
 	request := sendgrid.GetRequest(
-		apiKey,
+		s.ApiKey,
 		"/v3/mail/send",
 		"https://api.sendgrid.com",
 	)
@@ -50,7 +58,7 @@ func sengridSender(email Email) {
 	sendgrid.MakeRequestAsync(request)
 }
 
-func convertMails(addresses []string) []*mail.Email {
+func (s *sendGrid) convertMails(addresses []string) []*mail.Email {
 	mails := make([]*mail.Email, len(addresses))
 	for i, addr := range addresses {
 		mails[i] = mail.NewEmail("", addr)
@@ -58,7 +66,7 @@ func convertMails(addresses []string) []*mail.Email {
 	return mails
 }
 
-func buildBodies(email Email) (contents []*mail.Content) {
+func (s *sendGrid) buildBodies(email Email) (contents []*mail.Content) {
 	if email.PlainBody != "" {
 		contents = append(contents, mail.NewContent("text/plain", email.PlainBody))
 	}
