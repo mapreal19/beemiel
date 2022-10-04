@@ -1,4 +1,4 @@
-module github.com/mapreal19/beemiel
+module github.com/mapreal19/beemiel/v2
 
 go 1.15
 

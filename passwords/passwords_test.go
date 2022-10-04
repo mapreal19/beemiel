@@ -2,12 +2,13 @@ package passwords_test
 
 import (
 	"encoding/hex"
-	"github.com/mapreal19/beemiel/passwords"
+	"os"
+	"time"
+
+	"github.com/mapreal19/beemiel/v2/passwords"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"golang.org/x/crypto/ed25519"
-	"os"
-	"time"
 )
 
 var _ = Describe("passwords", func() {
