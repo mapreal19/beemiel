@@ -3,7 +3,7 @@ package mailer
 import (
 	"fmt"
 
-	"github.com/astaxie/beego"
+	"github.com/beego/beego/v2/core/logs"
 	"github.com/mapreal19/beemiel/envs"
 )
 
@@ -77,7 +77,7 @@ func (e *emailSender) Send(email Email) error {
 			email.Tos[0],
 			email.Subject,
 		)
-		beego.Info(message)
+		logs.Info(message)
 	}
 	return e.send(email)
 }

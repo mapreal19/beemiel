@@ -3,7 +3,7 @@ package mailer
 import (
 	"fmt"
 
-	"github.com/astaxie/beego"
+	"github.com/beego/beego/v2/core/logs"
 	"github.com/mailgun/mailgun-go"
 )
 
@@ -32,7 +32,7 @@ func newMailgunSender(g globalConf) *emailSender {
 }
 
 func (m *mailGun) mailgunSender(email Email) error {
-	beego.Info("Sending email through MailGun... Recipient: ", email.Tos[0])
+	logs.Info("Sending email through MailGun... Recipient: ", email.Tos[0])
 	mg := mailgun.NewMailgun(m.Domain, m.ApiKey)
 	m.setRegion(mg, m.Region)
 
