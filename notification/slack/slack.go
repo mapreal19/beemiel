@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/beego/beego/v2/core/logs"
-	"github.com/mapreal19/beemiel/envs"
+	"github.com/mapreal19/beemiel/v2/envs"
 	"github.com/slack-go/slack"
 )
 

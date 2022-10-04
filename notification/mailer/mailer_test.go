@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/mapreal19/beemiel/envs"
-	"github.com/mapreal19/beemiel/notification/mailer"
+	"github.com/mapreal19/beemiel/v2/envs"
+	"github.com/mapreal19/beemiel/v2/notification/mailer"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

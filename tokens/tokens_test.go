@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/mapreal19/beemiel/tokens"
+	"github.com/mapreal19/beemiel/v2/tokens"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )

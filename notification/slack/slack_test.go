@@ -3,8 +3,8 @@ package slack_test
 import (
 	"os"
 
-	"github.com/mapreal19/beemiel/envs"
-	"github.com/mapreal19/beemiel/notification/slack"
+	"github.com/mapreal19/beemiel/v2/envs"
+	"github.com/mapreal19/beemiel/v2/notification/slack"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
