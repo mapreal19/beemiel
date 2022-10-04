@@ -3,7 +3,7 @@ package slack
 import (
 	"fmt"
 
-	"github.com/astaxie/beego"
+	"github.com/beego/beego/v2/core/logs"
 	"github.com/mapreal19/beemiel/envs"
 	"github.com/slack-go/slack"
 )
@@ -59,7 +59,7 @@ func (e *slackSender) Send(message Message) error {
 			message.Channel,
 			message.Header,
 		)
-		beego.Info(text)
+		logs.Info(text)
 	}
 
 	return e.send(message)

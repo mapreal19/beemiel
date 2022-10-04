@@ -8,7 +8,7 @@ import (
 	"reflect"
 	"regexp"
 
-	"github.com/astaxie/beego"
+	"github.com/beego/beego/v2/server/web"
 	"github.com/onsi/gomega/types"
 )
 
@@ -61,7 +61,7 @@ func (matcher *setFlashMatcher) NegatedFailureMessage(actual interface{}) (messa
 
 func findFlashCookie(response *httptest.ResponseRecorder) *http.Cookie {
 	for _, cookie := range response.Result().Cookies() {
-		if cookie.Name == beego.BConfig.WebConfig.FlashName {
+		if cookie.Name == web.BConfig.WebConfig.FlashName {
 			return cookie
 		}
 	}
@@ -70,7 +70,7 @@ func findFlashCookie(response *httptest.ResponseRecorder) *http.Cookie {
 
 func getFlashLevel(response *httptest.ResponseRecorder) string {
 	cookie := findFlashCookie(response)
-	regexExpression, _ := regexp.Compile("%00(.*)%23" + beego.BConfig.WebConfig.FlashSeparator)
+	regexExpression, _ := regexp.Compile("%00(.*)%23" + web.BConfig.WebConfig.FlashSeparator)
 	level := regexExpression.FindStringSubmatch(cookie.Value)[1]
 
 	return level
@@ -78,7 +78,7 @@ func getFlashLevel(response *httptest.ResponseRecorder) string {
 
 func getFlashMessage(response *httptest.ResponseRecorder) string {
 	cookie := findFlashCookie(response)
-	regexExpression, _ := regexp.Compile(beego.BConfig.WebConfig.FlashSeparator + "%23(.*)%00")
+	regexExpression, _ := regexp.Compile(web.BConfig.WebConfig.FlashSeparator + "%23(.*)%00")
 	message := regexExpression.FindStringSubmatch(cookie.Value)[1]
 
 	messageUnescaped, _ := url.QueryUnescape(message)

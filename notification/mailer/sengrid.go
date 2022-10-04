@@ -3,7 +3,7 @@ package mailer
 import (
 	"encoding/base64"
 
-	"github.com/astaxie/beego"
+	"github.com/beego/beego/v2/core/logs"
 	"github.com/sendgrid/sendgrid-go"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
 )
@@ -21,7 +21,7 @@ func newSengridSender(g globalConf) *emailSender {
 }
 
 func (s *sendGrid) sengridSender(email Email) error {
-	beego.Info("Sending email through Sendgrid... Recipient: ", email.Tos[0])
+	logs.Info("Sending email through Sendgrid... Recipient: ", email.Tos[0])
 
 	fromMail := mail.NewEmail(email.FromName, email.From)
 
